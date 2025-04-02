@@ -83,6 +83,11 @@ void init_deck(Deck* d){
 }
 
 // Pull a card from the deck
-void pull_card(Deck* d, int index){
-    printf("You pulled %c%c, which has a value of %d\n", d->card[index].rank, d->card[index].suit, d->card[index].value);
+void pull(Deck* d, int index){
+    printf("\nYou pulled %c%c, which has a value of %d\n\n", d->card[index].rank, d->card[index].suit, d->card[index].value);
+}
+
+// Pull a card from the deck and add it to used cards
+void pullRemove(Deck* d, int removed[], int index){
+    pull(d, index);
 }

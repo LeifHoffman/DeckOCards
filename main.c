@@ -16,18 +16,38 @@
  int main(void){
 
     Deck deck;
+    int discard[52];
     char playerIn;
     int randNum;
 
     init_deck(&deck);
-    srand(time(NULL));
+
+    // Confirm if deck is seeded or "unseeded" (random based on time)
+    while (1){
+        printf("Would you like to seed deck pulls? (Y/N): ");
+        scanf(" %c", &playerIn);
+        printf("\n");
+        if (toupper(playerIn) == 'Y'){
+        printf("Enter seed: ");
+        scanf("%d", &randNum);
+        printf("\n");
+        break;
+        } else if (toupper(playerIn) == 'N'){
+            randNum = time(NULL);
+            break;
+        }
+    else
+        printf("Error: Response unknown, enter again\n\n");
+    }
+
+    srand(randNum);
 
     while (1){
         printf("Pull a card? (Y/N): ");
-        randNum = rand();
         scanf(" %c", &playerIn);
-        if (toupper(playerIn) == 'Y' )
-            pull_card(&deck, randNum%52);
+        if (toupper(playerIn) == 'Y' ){
+            pull(&deck, rand()%52);
+        }
         else if (toupper(playerIn) == 'N')
             break;
         else
