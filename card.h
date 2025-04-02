@@ -1,8 +1,12 @@
 /*************************************************************
+ * File: card.h
  * Purpose: Header file to include card struct and functions
  * Author: Leif Hoffman
  * Date Updated: 4-2-2025
  *************************************************************/
+
+#ifndef CARD_H
+#define CARD_H
 
  // Define card struct, which has a rank, suit, and value associated to it.
 typedef struct Card_struct{
@@ -11,6 +15,8 @@ typedef struct Card_struct{
     int value;
 } Card;
 
-void readRank(Card* c, char r);
-void readSuit(Card* c, char s);
-void readValue(Card* c, int v);
+void readRank(Card* card, char r);
+void readSuit(Card* card, char s);
+void readValue(Card* card, int v);
+
+#endif // CARD_H
