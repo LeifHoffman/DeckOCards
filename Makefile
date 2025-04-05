@@ -1,8 +1,8 @@
-MAIN_FILES = card.c card.h deck.c deck.h main.c
-MAIN = card.c deck.c main.c
+SRC = main_folder/card.c main_folder/deck.c main_folder/main.c
 
-main: $(MAIN_FILES)
-	gcc -Wall $(MAIN) -o main
+main: $(SRC)
+	mkdir -p build
+	gcc -Wall $(SRC) -o build/main
 
 clean:
 	rm *.o main

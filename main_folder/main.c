@@ -19,6 +19,7 @@
     int discard[52];
     char playerIn;
     int randNum;
+    int curCard = 0;
 
     init_deck(&deck);
 
@@ -40,13 +41,29 @@
         printf("Error: Response unknown, enter again\n\n");
     }
 
-    srand(randNum);
+    // Confirm a shuffle
+    while (1){
+        printf("Would you like shuffle? (Y/N): ");
+        scanf(" %c", &playerIn);
+        printf("\n");
+        if (toupper(playerIn) == 'Y'){
+            printf("Now shuffling...\n");
+            shuffle(&deck, randNum);
+            printf("\n");
+            break;
+        } else if (toupper(playerIn) == 'N'){
+            break;
+        }
+    else
+        printf("Error: Response unknown, enter again\n\n");
+    }
 
     while (1){
         printf("Pull a card? (Y/N): ");
         scanf(" %c", &playerIn);
         if (toupper(playerIn) == 'Y' ){
-            pull(&deck, rand()%52);
+            pull(&deck, curCard);
+            curCard++;
         }
         else if (toupper(playerIn) == 'N')
             break;

@@ -6,6 +6,7 @@
  ********************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "card.h"
 #include "deck.h"
 
@@ -90,4 +91,19 @@ void pull(Deck* d, int index){
 // Pull a card from the deck and add it to used cards
 void pullRemove(Deck* d, int removed[], int index){
     pull(d, index);
+}
+
+// Shuffle deck by swapping two random cards repeatedly
+void shuffle(Deck* d, int seed){
+    Card hold;
+    int c1;
+    int c2;
+    srand(seed);
+    for (int i = 0; i < 100000; i++){
+        c1 = rand()%52;
+        c2 = rand()%52;
+        hold = d->card[c1];
+        d->card[c1] = d->card[c2];
+        d->card[c2] = hold;
+    }
 }
