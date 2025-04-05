@@ -15,9 +15,10 @@
 
  int main(void){
 
-    Deck deck;
+    Deck* deck = NULL;
+    deck = (Deck*)malloc(sizeof(Deck));
     int playerChoice;
-    init_deck(&deck);
+    init_deck(deck);
 
     // Print welcome message
     printf("\n");
@@ -39,7 +40,7 @@
             // Lets a player test out a deck of 52 cards, can be shuffled and seeded
             case 1:
                 printf("Loading test deck...\n\n");
-                test_deck(&deck);
+                test_deck(deck);
                 break;
             case 2:
                 //TODO Implement rulesets for available games, will likely be moved to be included in each game
@@ -55,10 +56,12 @@
                 playerChoice = -1;
                 break;
             default:
-                printf("Choice not available, please enter again.\n");
+                printf("Choice not available, please enter again.\n\n");
                 break;
         }
     }
     
+    free(deck);
+
     return 0;
  }

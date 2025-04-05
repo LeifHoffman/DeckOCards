@@ -15,71 +15,76 @@
 // Construct standard deck
 void init_deck(Deck* d){
     for (int i = 0; i < 52; i++){
-        // Set rank (A, 2, 3, 4, 5, 6, 7, 8, 9, J, Q, K) and value four at a time (i.e. A,A,A,A,2,2,2,2...)
+        // Set rank (A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K) and value four at a time (i.e. A,A,A,A,2,2,2,2...)
         switch (i/4){
             case 0:
-                readRank(&d->card[i], 'A');
-                readValue(&d->card[i], 11);
+                readRank(&d->card[i], "Ace");
+                // Starts as Aces High
+                readValue(&d->card[i], 14);
                 break;
             case 1:
-                readRank(&d->card[i], '2');
+                readRank(&d->card[i], "2");
                 readValue(&d->card[i], 2);
                 break;
             case 2:
-                readRank(&d->card[i], '3');
+                readRank(&d->card[i], "3");
                 readValue(&d->card[i], 3);
                 break;
             case 3:
-                readRank(&d->card[i], '4');
+                readRank(&d->card[i], "4");
                 readValue(&d->card[i], 4);
                 break;
             case 4:
-                readRank(&d->card[i], '5');
+                readRank(&d->card[i], "5");
                 readValue(&d->card[i], 5);
                 break;
             case 5:
-                readRank(&d->card[i], '6');
+                readRank(&d->card[i], "6");
                 readValue(&d->card[i], 6);
                 break;
             case 6:
-                readRank(&d->card[i], '7');
+                readRank(&d->card[i], "7");
                 readValue(&d->card[i], 7);
                 break;
             case 7:
-                readRank(&d->card[i], '8');
+                readRank(&d->card[i], "8");
                 readValue(&d->card[i], 8);
                 break;
             case 8:
-                readRank(&d->card[i], '9');
+                readRank(&d->card[i], "9");
                 readValue(&d->card[i], 9);
                 break;
             case 9:
-                readRank(&d->card[i], 'J');
+                readRank(&d->card[i], "10");
                 readValue(&d->card[i], 10);
                 break;
             case 10:
-                readRank(&d->card[i], 'Q');
-                readValue(&d->card[i], 10);
+                readRank(&d->card[i], "Jack");
+                readValue(&d->card[i], 11);
+                break;
+            case 11:
+                readRank(&d->card[i], "Queen");
+                readValue(&d->card[i], 12);
                 break;
             default:
-                readRank(&d->card[i], 'K');
-                readValue(&d->card[i], 10);
+                readRank(&d->card[i], "King");
+                readValue(&d->card[i], 13);
                 break;
         }
 
         // Read suit (Spade, Heart, Club, Diamond) one at a time (i.e. S,H,C,D,S...)
         switch (i%4){
             case 0:
-                readSuit(&d->card[i], 'S');
+                readSuit(&d->card[i], "Spades");
                 break;
             case 1:
-                readSuit(&d->card[i], 'H');
+                readSuit(&d->card[i], "Hearts");
                 break;
             case 2:
-                readSuit(&d->card[i], 'C');
+                readSuit(&d->card[i], "Clubs");
                 break;
             default:
-                readSuit(&d->card[i], 'D');
+                readSuit(&d->card[i], "Diamonds");
                 break;
         }
     }
@@ -131,6 +136,12 @@ void test_deck(Deck* d){
         if (toupper(playerIn) == 'Y' ){
             pull(d, curCard);
             curCard++;
+            if (curCard == 52){
+                printf("\nLast card pulled! Reshuffling deck...\n");
+                shuffle(d, randNum);
+                curCard = 0;
+                printf("\nShuffle done!\n\n");
+            }
         }
         else if (toupper(playerIn) == 'N'){
             printf("\nReturning to main menu...\n\n");
@@ -143,7 +154,7 @@ void test_deck(Deck* d){
 
 // Pull a card from the deck
 void pull(Deck* d, int index){
-    printf("\nYou pulled %c%c, which has a value of %d\n\n", d->card[index].rank, d->card[index].suit, d->card[index].value);
+    printf("\nYou pulled %s of %s, which has a value of %d\n\n", d->card[index].rank, d->card[index].suit, d->card[index].value);
 }
 
 // Pull a card from the deck and add it to used cards
