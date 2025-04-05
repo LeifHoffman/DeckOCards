@@ -17,6 +17,7 @@ typedef struct Deck_struct{
 
 // Construct standard deck
 void init_deck(Deck* d);
+void test_deck(Deck* d);
 void pull(Deck* d, int index);
 void pullRemove(Deck* d, int removed[], int index);
 void shuffle(Deck* d, int seed);

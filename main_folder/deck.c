@@ -7,6 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <ctype.h>
 #include "card.h"
 #include "deck.h"
 
@@ -80,6 +82,62 @@ void init_deck(Deck* d){
                 readSuit(&d->card[i], 'D');
                 break;
         }
+    }
+}
+
+// Test a deck with standard card pulls going from top to bottom of deck, can be shuffled with a set seed.
+void test_deck(Deck* d){
+    char playerIn;
+    int randNum;
+    int curCard = 0;
+    // Confirm if deck is seeded or "unseeded" (random based on time)
+    while (1){
+        printf("Would you like to seed deck pulls? (Y/N): ");
+        scanf(" %c", &playerIn);
+        printf("\n");
+        if (toupper(playerIn) == 'Y'){
+        printf("Enter seed: ");
+        scanf("%d", &randNum);
+        printf("\n");
+        break;
+        } else if (toupper(playerIn) == 'N'){
+            randNum = time(NULL);
+            break;
+        }
+    else
+        printf("Error: Response unknown, enter again\n\n");
+    }
+
+    // Confirm a shuffle
+    while (1){
+        printf("Would you like shuffle? (Y/N): ");
+        scanf(" %c", &playerIn);
+        printf("\n");
+        if (toupper(playerIn) == 'Y'){
+            printf("Now shuffling...\n");
+            shuffle(d, randNum);
+            printf("\n");
+            break;
+        } else if (toupper(playerIn) == 'N'){
+            break;
+        }
+    else
+        printf("Error: Response unknown, enter again\n\n");
+    }
+
+    while (1){
+        printf("Pull a card? (Y/N): ");
+        scanf(" %c", &playerIn);
+        if (toupper(playerIn) == 'Y' ){
+            pull(d, curCard);
+            curCard++;
+        }
+        else if (toupper(playerIn) == 'N'){
+            printf("\nReturning to main menu...\n\n");
+            break;
+        }    
+        else
+            printf("Error: Input not found, try again\n\n");
     }
 }
 

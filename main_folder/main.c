@@ -16,61 +16,49 @@
  int main(void){
 
     Deck deck;
-    int discard[52];
-    char playerIn;
-    int randNum;
-    int curCard = 0;
-
+    int playerChoice;
     init_deck(&deck);
 
-    // Confirm if deck is seeded or "unseeded" (random based on time)
-    while (1){
-        printf("Would you like to seed deck pulls? (Y/N): ");
-        scanf(" %c", &playerIn);
-        printf("\n");
-        if (toupper(playerIn) == 'Y'){
-        printf("Enter seed: ");
-        scanf("%d", &randNum);
-        printf("\n");
-        break;
-        } else if (toupper(playerIn) == 'N'){
-            randNum = time(NULL);
-            break;
-        }
-    else
-        printf("Error: Response unknown, enter again\n\n");
-    }
+    // Print welcome message
+    printf("\n");
+    printf("********************************************************\n");
+    printf("*                                                      *\n");
+    printf("*                   Play Card Games!                   *\n");
+    printf("*                                                      *\n");
+    printf("*             What would you like to do?               *\n");
+    printf("*                                                      *\n");
+    printf("********************************************************\n\n");
 
-    // Confirm a shuffle
-    while (1){
-        printf("Would you like shuffle? (Y/N): ");
-        scanf(" %c", &playerIn);
+    // Get user's choice
+    while (playerChoice != -1){
+        printf(" 1. Test Deck\n 2. Read Rulesets\n 3. Learn About the Programmer\n 4. Exit Program\n\n");
+        printf("Choose: ");
+        scanf("%d", &playerChoice);
         printf("\n");
-        if (toupper(playerIn) == 'Y'){
-            printf("Now shuffling...\n");
-            shuffle(&deck, randNum);
-            printf("\n");
-            break;
-        } else if (toupper(playerIn) == 'N'){
-            break;
+        switch (playerChoice){
+            // Lets a player test out a deck of 52 cards, can be shuffled and seeded
+            case 1:
+                printf("Loading test deck...\n\n");
+                test_deck(&deck);
+                break;
+            case 2:
+                //TODO Implement rulesets for available games, will likely be moved to be included in each game
+                printf("Nothing here yet. Check back later!\n\n");
+                break;
+            case 3:
+                //TODO Not really needed, but explains a bit about me :P
+                printf("Nothing here yet. Check back later!\n\n");
+                break;
+            // Exits program
+            case 4:
+                printf("Exiting program...have a good day!\n");
+                playerChoice = -1;
+                break;
+            default:
+                printf("Choice not available, please enter again.\n");
+                break;
         }
-    else
-        printf("Error: Response unknown, enter again\n\n");
-    }
-
-    while (1){
-        printf("Pull a card? (Y/N): ");
-        scanf(" %c", &playerIn);
-        if (toupper(playerIn) == 'Y' ){
-            pull(&deck, curCard);
-            curCard++;
-        }
-        else if (toupper(playerIn) == 'N')
-            break;
-        else
-            printf("Error: Input not found, try again\n\n");
     }
     
-
     return 0;
  }

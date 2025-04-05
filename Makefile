@@ -5,4 +5,4 @@ main: $(SRC)
 	gcc -Wall $(SRC) -o build/main
 
 clean:
-	rm *.o main
+	rm -rf build
