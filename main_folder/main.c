@@ -2,7 +2,7 @@
  * File: main.c
  * Purpose: This is the main file for deck handling
  * Author: Leif Hoffman
- * Date Updated: 4-2-2025
+ * Date Updated: 4-5-2025
  ********************************************************************************/
 
  #include <stdio.h>
@@ -15,10 +15,10 @@
 
  int main(void){
 
+    // Initialize variables, include null deck pointer and player option.
     Deck* deck = NULL;
-    deck = (Deck*)malloc(sizeof(Deck));
     int playerChoice;
-    init_deck(deck);
+    
 
     // Print welcome message
     printf("\n");
@@ -40,6 +40,9 @@
             // Lets a player test out a deck of 52 cards, can be shuffled and seeded
             case 1:
                 printf("Loading test deck...\n\n");
+                // Initialize a deck to deck pointer
+                deck = init_deck(deck);
+                // Run test_deck
                 test_deck(deck);
                 break;
             case 2:

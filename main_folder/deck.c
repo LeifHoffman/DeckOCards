@@ -2,7 +2,7 @@
  * File: deck.c
  * Purpose: This file that handles functions found in deck.h
  * Author: Leif Hoffman
- * Date Updated: 4-2-2025
+ * Date Updated: 4-5-2025
  ********************************************************************************/
 
 #include <stdio.h>
@@ -13,7 +13,8 @@
 #include "deck.h"
 
 // Construct standard deck
-void init_deck(Deck* d){
+Deck* init_deck(Deck* d){
+    d = (Deck*)malloc(sizeof(Deck));
     for (int i = 0; i < 52; i++){
         // Set rank (A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K) and value four at a time (i.e. A,A,A,A,2,2,2,2...)
         switch (i/4){
@@ -88,6 +89,8 @@ void init_deck(Deck* d){
                 break;
         }
     }
+
+    return d;
 }
 
 // Test a deck with standard card pulls going from top to bottom of deck, can be shuffled with a set seed.

@@ -2,7 +2,7 @@
  * File: card.h
  * Purpose: Header file to include card struct and functions
  * Author: Leif Hoffman
- * Date Updated: 4-2-2025
+ * Date Updated: 4-5-2025
  *************************************************************/
 
 #ifndef CARD_H
