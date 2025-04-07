@@ -32,7 +32,7 @@
 
     // Get user's choice
     while (playerChoice != -1){
-        printf(" 1. Test Deck\n 2. Read Rulesets\n 3. Learn About the Programmer\n 4. Exit Program\n\n");
+        printf(" 1. Test Deck\n 2. Read Rulesets\n 3. Learn About the Programmer\n 4. Play War\n 5. Exit Program\n\n");
         printf("Choose: ");
         scanf("%d", &playerChoice);
         printf("\n");
@@ -41,7 +41,7 @@
             case 1:
                 printf("Loading test deck...\n\n");
                 // Initialize a deck to deck pointer
-                deck = init_deck(deck);
+                deck = init_test_deck(deck);
                 // Run test_deck
                 test_deck(deck);
                 break;
@@ -53,8 +53,11 @@
                 //TODO Not really needed, but explains a bit about me :P
                 printf("Nothing here yet. Check back later!\n\n");
                 break;
-            // Exits program
             case 4:
+                //TODO Implement game of War
+                break;
+            // Exits program
+            case 5:
                 printf("Exiting program...have a good day!\n");
                 playerChoice = -1;
                 break;

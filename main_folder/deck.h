@@ -16,7 +16,7 @@ typedef struct Deck_struct{
 } Deck;
 
 // Construct standard deck
-Deck* init_deck(Deck* d);
+Deck* init_test_deck(Deck* d);
 void test_deck(Deck* d);
 void pull(Deck* d, int index);
 void pullRemove(Deck* d, int removed[], int index);

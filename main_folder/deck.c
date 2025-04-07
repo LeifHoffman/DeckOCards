@@ -13,7 +13,7 @@
 #include "deck.h"
 
 // Construct standard deck
-Deck* init_deck(Deck* d){
+Deck* init_test_deck(Deck* d){
     d = (Deck*)malloc(sizeof(Deck));
     for (int i = 0; i < 52; i++){
         // Set rank (A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K) and value four at a time (i.e. A,A,A,A,2,2,2,2...)
