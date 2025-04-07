@@ -105,9 +105,9 @@ void test_deck(Deck* d){
         scanf(" %c", &playerIn);
         printf("\n");
         if (toupper(playerIn) == 'Y'){
-        printf("Enter seed: ");
-        scanf("%d", &randNum);
-        printf("\n");
+            printf("Enter seed: ");
+            scanf("%d", &randNum);
+            printf("\n");
         break;
         } else if (toupper(playerIn) == 'N'){
             randNum = time(NULL);

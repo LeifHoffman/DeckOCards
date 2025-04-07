@@ -10,7 +10,8 @@
 
  #include "../main_folder/deck.h"
  #include "../main_folder/card.h"
+ #include "../directions/directions.h"
 
- void play_war();
+ void play_war(Deck* deck);
 
  #endif // WAR_H
