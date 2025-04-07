@@ -12,13 +12,13 @@
 
  // Define Deck struct including 52 cards
 typedef struct Deck_struct{
-    Card card[52];
+    Card* cards;
 } Deck;
 
 // Construct standard deck
-Deck* init_test_deck(Deck* d);
+Deck* init_deck(Deck* d);
 void test_deck(Deck* d);
 void pull(Deck* d, int index);
 void pullRemove(Deck* d, int removed[], int index);
-void shuffle(Deck* d, int seed);
+void shuffle(Deck* d, int seed, int cardAmt);
 #endif // DECK_H

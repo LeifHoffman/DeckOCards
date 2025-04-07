@@ -12,6 +12,7 @@
  #include <ctype.h>
  #include "card.h"
  #include "deck.h"
+ #include "../war/war.h"
 
  int main(void){
 
@@ -41,9 +42,12 @@
             case 1:
                 printf("Loading test deck...\n\n");
                 // Initialize a deck to deck pointer
-                deck = init_test_deck(deck);
+                deck = init_deck(deck);
                 // Run test_deck
                 test_deck(deck);
+                // Free memory allocation
+                free(deck->cards);
+                free(deck);
                 break;
             case 2:
                 //TODO Implement rulesets for available games, will likely be moved to be included in each game
@@ -55,6 +59,14 @@
                 break;
             case 4:
                 //TODO Implement game of War
+                printf("Loading War...\n\n");
+                // Initialize playing deck
+                deck = init_deck(deck);
+                // Play game with created deck
+                play_war(deck);
+                // Free cards and deck afterwards
+                free(deck->cards);
+                free(deck);
                 break;
             // Exits program
             case 5:
@@ -63,11 +75,10 @@
                 break;
             default:
                 printf("Choice not available, please enter again.\n\n");
+                playerChoice = 0;
                 break;
         }
     }
-    
-    free(deck);
 
     return 0;
  }
