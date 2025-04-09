@@ -13,5 +13,7 @@
  #include "../directions/directions.h"
 
  void play_war(Deck* deck);
+ void addCards(Card* playerHoldDeck, int* cardsHeld, Card* heldDeck, int* holdAmt);
+ void refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize);
 
  #endif // WAR_H
