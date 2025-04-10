@@ -14,6 +14,6 @@
 
  void play_war(Deck* deck);
  void addCards(Card* playerHoldDeck, int* cardsHeld, Card* heldDeck, int* holdAmt);
- void refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize);
+ Card* refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize, int* curDeck);
 
  #endif // WAR_H

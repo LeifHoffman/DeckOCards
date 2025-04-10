@@ -109,16 +109,18 @@
     while (p1DeckSize != 0 && p2DeckSize != 0){
         // Wait for user input to continue
         printf("Press enter to play your next card.\n\n");
-        scanf("%c", &userIn);
+        //scanf("%c", &userIn);
 
         // Handle Deck refill
-        if (p1CurCard == p1CurDeck){
-            refillDeck(p1->cards, p1CardHold, p1DeckSize);
+        if (p1CurCard == p1CurDeck-1){
+            p1->cards = refillDeck(p1->cards, p1CardHold, p1DeckSize, &p1CurDeck);
             p1CurCard = 0;
+            p1NumHeld = 0;
         }
-        if (p2CurCard == p2CurDeck){
-            refillDeck(p2->cards, p2CardHold, p2DeckSize);
+        if (p2CurCard == p2CurDeck-1){
+            p2->cards = refillDeck(p2->cards, p2CardHold, p2DeckSize, &p2CurDeck);
             p2CurCard = 0;
+            p2NumHeld = 0;
         }
         
         // Reveal top card for both decks
@@ -136,19 +138,19 @@
         // Start war if values are same
         while (p1CurValue == p2CurValue){
             printf("War! Enter to continue.\n\n");
-            scanf("%c", &userIn);
+            //scanf("%c", &userIn);
             // Draw three cards and reveal last
             for (int i = 0; i < 3; i++){
                 p1CurCard++;
                 p2CurCard++;
                 // Handle Deck refill
-                if (p1CurCard == p1CurDeck){
-                    refillDeck(p1->cards, p1CardHold, p1DeckSize);
+                if (p1CurCard == p1CurDeck-1){
+                    p1->cards = refillDeck(p1->cards, p1CardHold, p1DeckSize, &p1CurDeck);
                     shuffle(p1, rand(), p1DeckSize);
                     p1CurCard = 0;
                 }
-                if (p2CurCard == p2CurDeck){
-                    refillDeck(p2->cards, p2CardHold, p2DeckSize);
+                if (p2CurCard == p2CurDeck-1){
+                    p2->cards = refillDeck(p2->cards, p2CardHold, p2DeckSize, &p2CurDeck);
                     shuffle(p2, rand(), p2DeckSize);
                     p2CurCard = 0;
                 }
@@ -166,17 +168,25 @@
             printf("You win!\n\n");
             p1DeckSize += heldCards/2;
             p2DeckSize -= heldCards/2;
+            p1CurCard++;
+            p2CurCard++;
             addCards(p1CardHold, &p1NumHeld, hold, &heldCards);
+            printf("Your deck has %d cards, which has %d cards in hand, and %d in hold\n", p1DeckSize, p1CurDeck-p1CurCard, p1NumHeld);
         } else {
             printf("You loss...\n\n");
             p2DeckSize += heldCards/2;
             p1DeckSize -= heldCards/2;
+            p1CurCard++;
+            p2CurCard++;
             addCards(p2CardHold, &p2NumHeld, hold, &heldCards);
+            printf("Your deck has %d cards, which has %d cards in hand, and %d in hold\n", p1DeckSize, p1CurDeck-p1CurCard, p1NumHeld);
         }
+    }
 
-        // Go to next card to play
-        p1CurCard++;
-        p2CurCard++;
+    if (p1DeckSize == 0){
+        printf("You lost the game of War...\n\n");
+    } else {
+        printf("You won the game of War!\n\n");
     }
  }
 
@@ -190,8 +200,11 @@
  }
 
  // Refill player deck with their hold pile if empty
- void refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize){
-    pDeck = (Card*)realloc(pDeck, deckSize*sizeof(Card));
+ Card* refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize, int* curDeck){
+    free(pDeck);
+    pDeck = (Card*) calloc(sizeof(Card), deckSize);
     for (int i = 0; i < deckSize; i++)
         pDeck[i] = pHoldDeck[i];
+    *curDeck = deckSize;
+    return pDeck;
  }
