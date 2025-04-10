@@ -1,8 +1,8 @@
 /****************************
  * File: war.c
- * Purpose: One of three card games available for players
+ * Purpose: One of three card games available for players (War)
  * Author: Leif Hoffman
- * Date Updated: 4-7-2025
+ * Date Updated: 4-10-2025
  ****************************/
 
  #include <stdio.h>
@@ -106,18 +106,18 @@
 
 
     printf("Game start!\n\n");
-    while (p1DeckSize != 0 && p2DeckSize != 0){
+    while (!(p1DeckSize <= 0) && !(p2DeckSize <= 0)){
         // Wait for user input to continue
         printf("Press enter to play your next card.\n\n");
-        //scanf("%c", &userIn);
+        scanf("%c", &userIn);
 
         // Handle Deck refill
-        if (p1CurCard == p1CurDeck-1){
+        if (p1CurCard == p1CurDeck){
             p1->cards = refillDeck(p1->cards, p1CardHold, p1DeckSize, &p1CurDeck);
             p1CurCard = 0;
             p1NumHeld = 0;
         }
-        if (p2CurCard == p2CurDeck-1){
+        if (p2CurCard == p2CurDeck){
             p2->cards = refillDeck(p2->cards, p2CardHold, p2DeckSize, &p2CurDeck);
             p2CurCard = 0;
             p2NumHeld = 0;
@@ -138,21 +138,41 @@
         // Start war if values are same
         while (p1CurValue == p2CurValue){
             printf("War! Enter to continue.\n\n");
-            //scanf("%c", &userIn);
+            scanf("%c", &userIn);
             // Draw three cards and reveal last
             for (int i = 0; i < 3; i++){
                 p1CurCard++;
                 p2CurCard++;
                 // Handle Deck refill
-                if (p1CurCard == p1CurDeck-1){
+                if (p1CurCard == p1CurDeck){
                     p1->cards = refillDeck(p1->cards, p1CardHold, p1DeckSize, &p1CurDeck);
                     shuffle(p1, rand(), p1DeckSize);
                     p1CurCard = 0;
+                    p1NumHeld = 0;
                 }
-                if (p2CurCard == p2CurDeck-1){
+                if (p2CurCard == p2CurDeck){
                     p2->cards = refillDeck(p2->cards, p2CardHold, p2DeckSize, &p2CurDeck);
                     shuffle(p2, rand(), p2DeckSize);
                     p2CurCard = 0;
+                    p2NumHeld = 0;
+                }
+                // Check if either deck is empty for loss conditions
+                if (p1DeckSize-i == 0){
+                    printf("You ran out of cards during War. You lost the game...\n\n");
+                    // Free memory allocation before termination of function
+                    free(p1->cards);
+                    free(p2->cards);
+                    free(p1);
+                    free(p2);
+                    return;
+                } else if (p2DeckSize-i == 0){
+                    printf("Your opponent ran out of cards during War. You won the game!\n\n");
+                    // Free memory allocation before termination of function
+                    free(p1->cards);
+                    free(p2->cards);
+                    free(p1);
+                    free(p2);
+                    return;
                 }
                 hold[heldCards++] = p1->cards[p1CurCard];
                 hold[heldCards++] = p2->cards[p2CurCard];
@@ -171,7 +191,9 @@
             p1CurCard++;
             p2CurCard++;
             addCards(p1CardHold, &p1NumHeld, hold, &heldCards);
-            printf("Your deck has %d cards, which has %d cards in hand, and %d in hold\n", p1DeckSize, p1CurDeck-p1CurCard, p1NumHeld);
+            printf("Your deck has %d total cards, which includes %d cards in your hand\n", p1DeckSize, p1CurDeck-p1CurCard);
+            // Print Opponent deck for debug
+            printf("Opponent deck has %d total cards, which includes %d cards in their hand\n", p2DeckSize, p2CurDeck-p2CurCard);
         } else {
             printf("You loss...\n\n");
             p2DeckSize += heldCards/2;
@@ -179,15 +201,23 @@
             p1CurCard++;
             p2CurCard++;
             addCards(p2CardHold, &p2NumHeld, hold, &heldCards);
-            printf("Your deck has %d cards, which has %d cards in hand, and %d in hold\n", p1DeckSize, p1CurDeck-p1CurCard, p1NumHeld);
+            printf("Your deck has %d total cards, which includes %d cards in your hand\n", p1DeckSize, p1CurDeck-p1CurCard);
+            // Print Opponent deck for debug
+            printf("Opponent deck has %d total cards, which includes %d cards in their hand\n", p2DeckSize, p2CurDeck-p2CurCard);
         }
     }
 
     if (p1DeckSize == 0){
-        printf("You lost the game of War...\n\n");
+        printf("You ran out of cards and lost the game of War...\n\n");
     } else {
-        printf("You won the game of War!\n\n");
+        printf("You got all the cards and won the game of War!\n\n");
     }
+
+    // Free memory allocation before termination of function
+    free(p1->cards);
+    free(p2->cards);
+    free(p1);
+    free(p2);
  }
 
  // Add cards in hold pile to player hold deck
