@@ -18,3 +18,8 @@
     printf("The winner of this draw wins all drawn cards in war. Otherwise, players will continue cycling until a winner is decided.");
     printf("The game is considered done when one player can no longer play any cards, where the player with all cards is the winner.\n");
  }
+
+ // Explains the rules of scoundrel
+ void read_scoundrel_rules(){
+   printf("No rules yet, figure it our yourself lelelel.\n");
+ }

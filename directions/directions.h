@@ -9,5 +9,6 @@
  #define DIRECTIONS_H
 
  void read_war_rules();
+ void read_scoundrel_rules();
 
  #endif // DIRECTIONS_H
