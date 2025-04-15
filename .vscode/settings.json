@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "deck.h": "c",
-        "card.h": "c"
+        "card.h": "c",
+        "directions.h": "c"
     }
 }

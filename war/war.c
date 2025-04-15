@@ -1,6 +1,6 @@
 /****************************
  * File: war.c
- * Purpose: One of three card games available for players (War)
+ * Purpose: One of two card games available for players (War)
  * Author: Leif Hoffman
  * Date Updated: 4-10-2025
  ****************************/
