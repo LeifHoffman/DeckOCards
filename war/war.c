@@ -43,6 +43,7 @@
 
     // Define user inputs
     char userIn;
+    char junk;
     //int userChoice;
 
     // Shuffle cards in main deck
@@ -61,6 +62,7 @@
     while (1){
         printf("Would you like to read the rules of the game? (Y/N): ");
         scanf(" %c", &userIn);
+        scanf("%c", &junk);
         if (toupper(userIn) == 'Y'){
             printf("\n");
             read_war_rules();
