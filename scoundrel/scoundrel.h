@@ -13,7 +13,7 @@
  #include "../directions/directions.h"
 
  void play_scoundrel(Deck* deck);
- Card* fillRoom(Deck* dungeon, Card* room);
+ Card* fillRoom(Deck* dungeon, Card* room, int* card);
  void printRoom(Card* room);
  void performAction(Card* room, int action, int* health, int* weapon, int* last);
 

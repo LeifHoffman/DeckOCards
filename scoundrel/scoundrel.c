@@ -39,6 +39,7 @@
             curCard++;
         }
     }
+    curCard = 0;
 
     // Shuffle deck
     srand(time(NULL));
@@ -70,15 +71,16 @@
         // Fill room
         if (dungeonSize > 3){
             printf("Filling room...\n");
-            room = fillRoom(dungeon, room);
+            roomSize = 4;
+            room = fillRoom(dungeon, room, &curCard);
         }
             
 
         // Print out room
         printRoom(room);
 
-        // Stay in room until three cards are played or room is skipped
-        while (roomSize != 1 && hasSkipped == false){
+        // Stay in room until three cards are played, room is skipped, or health reaches zero
+        while (roomSize != 1 && hasSkipped == false && health > 0){
 
             // Print player's current stats
             printf("Current Health: %d\n", health);
@@ -96,7 +98,7 @@
             if (roomSize == 4 && hasSkipped == false)
                 printf("Choose Action [1 | 2 | 3 | 4 | S]: ");
             else
-                printf("Choose Action [1 | 2 | 3 | 4 ]:");
+                printf("Choose Action [1 | 2 | 3 | 4 ]: ");
 
             // Get User Input
             scanf(" %c", &userIn);
@@ -153,15 +155,32 @@
                     break;
             }
         }
+
+        if (roomSize == 1)
+            printf("Room Cleared!\n\n");
+        else if (health <= 0){
+            printf("Health reached zero! You lost!\n\n");
+            free(dungeon->cards);
+            free(dungeon);
+            free(room);
+            return;
+        }
         
     }
+
+    printf("You successfully made it through the dungeon! You won the game of Scoundrel!\n\n");
+    free(dungeon->cards);
+    free(dungeon);
+    free(room);
+
  }
 
  // Fill room with cards from the top of the deck
- Card* fillRoom(Deck* dungeon, Card* room){
+ Card* fillRoom(Deck* dungeon, Card* room, int* card){
     for (int i = 0; i < 4; i++){
         if (room[i].value == 0){
-            room[i] = dungeon->cards[i];
+            room[i] = dungeon->cards[*card];
+            (*card)++;
         }
     }
     return room;
@@ -184,18 +203,22 @@
     // Handle fighting a monster from Spade or Club cards
     if (!strcmp(room[action].suit, "Spades") || !strcmp(room[action].suit, "Clubs")){
         printf("\nFighting monster %s of %s\n", room[action].rank, room[action].suit);
-        if (room[action].value >= (*last)){
+        // Force lastDefeated to be a large value rather than zero when it starts at zero
+        if ((*last == 0))
+            *last = 20;
+        if (room[action].value >= (*last) || (*weapon) == 0){
             printf("No weapon or weapon dulled! Must fight bare-handed!\n\n");
             *health -= room[action].value;
         } else {
             printf("Fight with weapon? (Y/N): ");
             scanf(" %c", &userIn);
             scanf("%c", &junk);
-            if (userIn == 'Y'){
+            if (toupper(userIn) == 'Y'){
                 printf("Fighting with weapon of strength %d!\n\n", *weapon);
                 if (room[action].value > *weapon){
                     *health -= room[action].value - *weapon;
                 }
+                *last = room[action].value;
             } else {
                 printf("Fighting bare-handed!\n\n");
                 *health -= room[action].value;
@@ -207,12 +230,13 @@
     } else if (!strcmp(room[action].suit, "Diamonds")){
         printf("Equiping weapon of strength %d!\n\n", room[action].value);
         *weapon = room[action].value;
+        *last = 0;
         room[action].value = 0;
 
     // Handle healing from Heart cards
     } else {
         printf("Found a healing potion of strength %d!\n\n", room[action].value);
-        if (*health < (*health)+ (room[action].value)){
+        if (20 < (*health) + (room[action].value)){
             *health = 20;
         } else {
             *health = (*health)+ (room[action].value);
