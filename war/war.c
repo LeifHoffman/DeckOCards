@@ -2,7 +2,7 @@
  * File: war.c
  * Purpose: One of two card games available for players (War)
  * Author: Leif Hoffman
- * Date Updated: 4-10-2025
+ * Date Updated: 4-21-2025
  ****************************/
 
  #include <stdio.h>

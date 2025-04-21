@@ -2,7 +2,7 @@
  * File: scoundrel.c
  * Purpose: One of two card games available for players (Scoundrel)
  * Author: Leif Hoffman
- * Date Updated: 4-17-2025
+ * Date Updated: 4-21-2025
  ****************************/
 
  #include <stdio.h>

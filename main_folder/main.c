@@ -2,7 +2,7 @@
  * File: main.c
  * Purpose: This is the main file for deck handling
  * Author: Leif Hoffman
- * Date Updated: 4-5-2025
+ * Date Updated: 4-21-2025
  ********************************************************************************/
 
  #include <stdio.h>
@@ -90,7 +90,7 @@
                 printf("Exiting program...have a good day!\n");
                 playerChoice = -1;
                 break;
-                
+
             default:
                 printf("Choice not available, please enter again.\n\n");
                 playerChoice = 0;
