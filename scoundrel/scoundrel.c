@@ -70,11 +70,9 @@
         printf("Entering Room...\n\n");
 
         // Fill room
-        if (dungeonSize > 3){
-            printf("Filling room...\n");
-            roomSize = 4;
-            room = fillRoom(dungeon, room, &curCard);
-        }
+        printf("Filling room...\n");
+        roomSize = 4;
+        room = fillRoom(dungeon, room, &curCard);
             
         // Check if previous room was skipped, set flag if true
         if (skipped == true){
@@ -83,7 +81,7 @@
         }
 
         // Stay in room until three cards are played, room is skipped, or health reaches zero
-        while (roomSize != 1 && health > 0){
+        while (roomSize != 1 && health > 0 && dungeonSize != 0){
 
             // Print out room
             printRoom(room);
@@ -157,6 +155,15 @@
                         printf("Unable to skip, complete this one to skip again.\n\n");
                     }
                     break;
+                // Cheating tool for testing end of game functionality
+                // case '~':
+                //     printf("Cheating past room...\n\n");
+                //     room[0].value = 0;
+                //     room[1].value = 0;
+                //     room[2].value = 0;
+                //     dungeonSize -= 3;
+                //     roomSize -= 3;
+                //     break;
                 default:
                     printf("%c is not an option.\n\n", userIn);
                     break;
@@ -198,7 +205,7 @@
  // Fill room with cards from the top of the deck
  Card* fillRoom(Deck* dungeon, Card* room, int* card){
     for (int i = 0; i < 4; i++){
-        if (room[i].value == 0){
+        if (room[i].value == 0 && (*card) < 44){
             room[i] = dungeon->cards[*card];
             (*card)++;
         }
