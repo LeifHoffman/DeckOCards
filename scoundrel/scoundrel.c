@@ -23,9 +23,9 @@
     char junk;
     bool skipped = false;
     bool hasSkipped = false;
-    Deck* dungeon = (Deck*)malloc(sizeof(Deck));
-    dungeon->cards = (Card*)malloc(sizeof(Card)*44);
-    Card* room = (Card*)malloc(sizeof(Card)*4);
+    Deck* dungeon = (Deck*)calloc(1, sizeof(Deck));
+    dungeon->cards = (Card*)calloc(44, sizeof(Card));
+    Card* room = (Card*)calloc(4, sizeof(Card));
     int dungeonSize = 44;
     int roomSize = 4;
     int curCard = 0;
