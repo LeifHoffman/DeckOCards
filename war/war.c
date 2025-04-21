@@ -17,10 +17,10 @@
  void play_war(Deck* deck){
 
     // Initialize player deck pointers
-    Deck* p1 = (Deck*)malloc(sizeof(Deck));
-    p1->cards = (Card*)malloc(26*sizeof(Card));
-    Deck* p2 = (Deck*)malloc(sizeof(Deck));
-    p2->cards = (Card*)malloc(26*sizeof(Card));
+    Deck* p1 = (Deck*)calloc(1, sizeof(Deck));
+    p1->cards = (Card*)calloc(26, sizeof(Card));
+    Deck* p2 = (Deck*)calloc(1, sizeof(Deck));
+    p2->cards = (Card*)calloc(26, sizeof(Card));
 
     // Initialize player deck amounts
     int p1DeckSize = 26;
@@ -111,7 +111,7 @@
     while (!(p1DeckSize <= 0) && !(p2DeckSize <= 0)){
         // Wait for user input to continue
         printf("Press enter to play your next card.\n\n");
-        scanf("%c", &userIn);
+        //scanf("%c", &userIn);
 
         // Handle Deck refill
         if (p1CurCard == p1CurDeck){
@@ -140,7 +140,7 @@
         // Start war if values are same
         while (p1CurValue == p2CurValue){
             printf("War! Enter to continue.\n\n");
-            scanf("%c", &userIn);
+            //scanf("%c", &userIn);
             // Draw three cards and reveal last
             for (int i = 0; i < 3; i++){
                 p1CurCard++;
@@ -163,17 +163,25 @@
                     printf("You ran out of cards during War. You lost the game...\n\n");
                     // Free memory allocation before termination of function
                     free(p1->cards);
+                    p1->cards = NULL;
                     free(p2->cards);
+                    p2->cards = NULL;
                     free(p1);
+                    p1 = NULL;
                     free(p2);
+                    p2 = NULL;
                     return;
                 } else if (p2DeckSize-i == 0){
                     printf("Your opponent ran out of cards during War. You won the game!\n\n");
                     // Free memory allocation before termination of function
                     free(p1->cards);
+                    p1->cards = NULL;
                     free(p2->cards);
+                    p2->cards = NULL;
                     free(p1);
+                    p1 = NULL;
                     free(p2);
+                    p2 = NULL;
                     return;
                 }
                 hold[heldCards++] = p1->cards[p1CurCard];
@@ -193,9 +201,9 @@
             p1CurCard++;
             p2CurCard++;
             addCards(p1CardHold, &p1NumHeld, hold, &heldCards);
-            printf("Your deck has %d total cards, which includes %d cards in your hand\n", p1DeckSize, p1CurDeck-p1CurCard);
+            printf("Your deck has %d total cards\n", p1DeckSize);
             // Print Opponent deck for debug
-            printf("Opponent deck has %d total cards, which includes %d cards in their hand\n", p2DeckSize, p2CurDeck-p2CurCard);
+            printf("Opponent deck has %d total cards\n", p2DeckSize);
         } else {
             printf("You loss...\n\n");
             p2DeckSize += heldCards/2;
@@ -203,9 +211,9 @@
             p1CurCard++;
             p2CurCard++;
             addCards(p2CardHold, &p2NumHeld, hold, &heldCards);
-            printf("Your deck has %d total cards, which includes %d cards in your hand\n", p1DeckSize, p1CurDeck-p1CurCard);
+            printf("Your deck has %d total cards\n", p1DeckSize);
             // Print Opponent deck for debug
-            printf("Opponent deck has %d total cards, which includes %d cards in their hand\n", p2DeckSize, p2CurDeck-p2CurCard);
+            printf("Opponent deck has %d total cards\n", p2DeckSize);
         }
     }
 
@@ -217,9 +225,13 @@
 
     // Free memory allocation before termination of function
     free(p1->cards);
+    p1->cards = NULL;
     free(p2->cards);
+    p2->cards = NULL;
     free(p1);
+    p1 = NULL;
     free(p2);
+    p2 = NULL;                
  }
 
  // Add cards in hold pile to player hold deck
@@ -234,7 +246,7 @@
  // Refill player deck with their hold pile if empty
  Card* refillDeck(Card* pDeck, Card* pHoldDeck, int deckSize, int* curDeck){
     free(pDeck);
-    pDeck = (Card*) calloc(sizeof(Card), deckSize);
+    pDeck = (Card*) calloc(deckSize, sizeof(Card));
     for (int i = 0; i < deckSize; i++)
         pDeck[i] = pHoldDeck[i];
     *curDeck = deckSize;
