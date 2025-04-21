@@ -14,8 +14,8 @@
 
 // Construct standard deck for testing
 Deck* init_deck(Deck* d){
-    d = (Deck*)malloc(sizeof(Deck));
-    d->cards = (Card*)malloc(52 * sizeof(Card));
+    d = (Deck*)calloc(1, sizeof(Deck));
+    d->cards = (Card*)calloc(52, sizeof(Card));
     for (int i = 0; i < 52; i++){
         // Set rank (A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K) and value four at a time (i.e. A,A,A,A,2,2,2,2...)
         switch (i/4){
@@ -135,6 +135,25 @@ void test_deck(Deck* d){
     }
 
     while (1){
+        printf("Would you like to print whole deck? (Y/N): ");
+        scanf(" %c", &playerIn);
+        printf("\n");
+        if (toupper(playerIn) == 'Y'){
+            for (int i = 0; i < 52; i++){
+                printf("Card %d", i+1);
+                pull(d, i);
+
+            }
+                
+            return;
+        } else if (toupper(playerIn) == 'N'){
+            break;
+        }
+    else
+        printf("Error: Response unknown, enter again\n\n");
+    }
+
+    while (1){
         printf("Pull a cards? (Y/N): ");
         scanf(" %c", &playerIn);
         if (toupper(playerIn) == 'Y' ){
@@ -172,7 +191,7 @@ void shuffle(Deck* d, int seed, int cardAmt){
     int c1;
     int c2;
     srand(seed);
-    for (int i = 0; i < 100000; i++){
+    for (int i = 0; i < 1000000; i++){
         c1 = rand()%cardAmt;
         c2 = rand()%cardAmt;
         hold = d->cards[c1];

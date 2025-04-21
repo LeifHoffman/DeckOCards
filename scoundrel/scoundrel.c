@@ -2,7 +2,7 @@
  * File: scoundrel.c
  * Purpose: One of two card games available for players (Scoundrel)
  * Author: Leif Hoffman
- * Date Updated: 4-14-2025
+ * Date Updated: 4-17-2025
  ****************************/
 
  #include <stdio.h>
@@ -21,6 +21,7 @@
     // Initilize dungeon using proper cards (Excludes red face and ace cards) and needed variables
     char userIn;
     char junk;
+    bool skipped = false;
     bool hasSkipped = false;
     Deck* dungeon = (Deck*)malloc(sizeof(Deck));
     dungeon->cards = (Card*)malloc(sizeof(Card)*44);
@@ -43,7 +44,7 @@
 
     // Shuffle deck
     srand(time(NULL));
-    shuffle(dungeon, rand(), 44);
+    shuffle(dungeon, rand(), dungeonSize);
 
     // Offer game explanation
     while (1){
@@ -75,12 +76,17 @@
             room = fillRoom(dungeon, room, &curCard);
         }
             
-
-        // Print out room
-        printRoom(room);
+        // Check if previous room was skipped, set flag if true
+        if (skipped == true){
+            hasSkipped = true;
+            skipped = false;
+        }
 
         // Stay in room until three cards are played, room is skipped, or health reaches zero
-        while (roomSize != 1 && hasSkipped == false && health > 0){
+        while (roomSize != 1 && health > 0){
+
+            // Print out room
+            printRoom(room);
 
             // Print player's current stats
             printf("Current Health: %d\n", health);
@@ -91,14 +97,14 @@
                 if (lastDefeated > 0)
                 printf("Last Monster Defeated: %d\n", lastDefeated);
             }
-            
+            printf("Remaining dungeon encounters: %d\n", dungeonSize);
             
 
             // Print Room Actions
             if (roomSize == 4 && hasSkipped == false)
                 printf("Choose Action [1 | 2 | 3 | 4 | S]: ");
             else
-                printf("Choose Action [1 | 2 | 3 | 4 ]: ");
+                printf("Choose Action [1 | 2 | 3 | 4]: ");
 
             // Get User Input
             scanf(" %c", &userIn);
@@ -143,36 +149,50 @@
                     }
                     break;
                 case 'S':
-                    if (hasSkipped == false){
+                    if (hasSkipped == false && roomSize == 4){
                         printf("Skipping room...\n\n");
-                        hasSkipped = true;
+                        skipped = true;
+                        skipRoom(dungeon, room, dungeonSize, &curCard);
                     } else {
-                        printf("You've either started this room or skipped the last one, complete this one to skip again.\n\n");
+                        printf("Unable to skip, complete this one to skip again.\n\n");
                     }
                     break;
                 default:
                     printf("%c is not an option.\n\n", userIn);
                     break;
             }
+            if (skipped == true){
+                break;
+            }
         }
 
-        if (roomSize == 1)
-            printf("Room Cleared!\n\n");
-        else if (health <= 0){
+
+        if (health <= 0){
             printf("Health reached zero! You lost!\n\n");
             free(dungeon->cards);
+            dungeon->cards = NULL;
             free(dungeon);
+            dungeon = NULL;
             free(room);
+            room = NULL;
             return;
         }
+        else if (roomSize == 1){
+            printf("Room Cleared!\n\n");
+            hasSkipped = false;
+        }
+        
         
     }
 
     printf("You successfully made it through the dungeon! You won the game of Scoundrel!\n\n");
     free(dungeon->cards);
+    dungeon->cards = NULL;
     free(dungeon);
+    dungeon = NULL;
     free(room);
-
+    room = NULL;
+    return;
  }
 
  // Fill room with cards from the top of the deck
@@ -189,10 +209,43 @@
  // Show all possible options for room
  void printRoom(Card* room){
     printf("Current Room Contains:\n\n");
-    printf("1: %s of %s\n", room[0].rank, room[0].suit);
-    printf("2: %s of %s\n", room[1].rank, room[1].suit);
-    printf("3: %s of %s\n", room[2].rank, room[2].suit);
-    printf("4: %s of %s\n\n", room[3].rank, room[3].suit);
+    if (room[0].value != 0)
+        printf("1: %s of %s\n", room[0].rank, room[0].suit);
+    else
+        printf("1: Cleared!\n");
+
+    if (room[1].value != 0)
+        printf("2: %s of %s\n", room[1].rank, room[1].suit);
+    else
+        printf("2: Cleared!\n");
+
+    if (room[2].value != 0)    
+        printf("3: %s of %s\n", room[2].rank, room[2].suit);
+    else
+        printf("3: Cleared!\n");
+
+    if (room[3].value != 0)
+        printf("4: %s of %s\n\n", room[3].rank, room[3].suit);
+    else
+        printf("4: Cleared!\n\n");
+ }
+
+ // Handle skipping room
+ void skipRoom(Deck* dungeon, Card* room, int dSize, int* card){
+    // Move cards to front of dungeon
+    for (int i = 0; i < dSize-4; i++){
+        dungeon->cards[i] = dungeon->cards[i+4];
+    }
+    // Set room to back of dungeon if there's space
+    if (dSize >= 4)
+        for (int i = 0; i < 4; i++){
+            dungeon->cards[dSize-4+i] = room[i];
+    }
+    // Clear room
+    for (int i = 0; i < 4; i++)
+        room[i].value = 0;
+    // Push back curCard by four
+    *card -= 4;
  }
 
  // Perform an action based on card selected
