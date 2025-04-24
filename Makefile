@@ -1,8 +1,10 @@
-SRC = main_folder/card.c main_folder/deck.c main_folder/main.c war/war.c scoundrel/scoundrel.c directions/directions.c
+BUILD_DIR = build
+SRC = main_folder/card.c main_folder/deck.c main_folder/main.c 
+EXTRA = war/war.c scoundrel/scoundrel.c directions/directions.c
 
-main: $(SRC)
-	mkdir -p build
-	gcc -Wall $(SRC) -o build/main
+main: $(SRC) $(EXTRA)
+	mkdir -p $(BUILD_DIR)
+	gcc -Wall $(SRC) $(EXTRA) -o $(BUILD_DIR)/main
 
 clean:
-	rm -rf build
+	rm -rf $(BUILD_DIR)

@@ -23,6 +23,8 @@
     char junk;
     bool skipped = false;
     bool hasSkipped = false;
+    bool originalRules = true;
+    bool canHeal = true;
     Deck* dungeon = (Deck*)calloc(1, sizeof(Deck));
     dungeon->cards = (Card*)calloc(44, sizeof(Card));
     Card* room = (Card*)calloc(4, sizeof(Card));
@@ -62,6 +64,22 @@
         }else
             printf("Error: Input not found, please try again.\n\n");
     }
+
+    // Give option to enable same room healing (modified game) or discard additional health potions found in room (original ruleset)
+    while (1){
+        printf("Would you like to have same room healing enabled? (Y/N): ");
+        scanf(" %c", &userIn);
+        scanf("%c", &junk);
+        if (toupper(userIn) == 'Y'){
+            originalRules = false;
+            printf("\n");
+            break;
+        } else if (toupper(userIn) == 'N'){
+            printf("\n");
+            break;
+        }else
+            printf("Error: Input not found, please try again.\n\n");
+    }
     
     printf("Now entering dungeon...\n\n");
 
@@ -73,6 +91,9 @@
         printf("Filling room...\n");
         roomSize = 4;
         room = fillRoom(dungeon, room, &curCard);
+
+        // Enable healing for room
+        canHeal = true;
             
         // Check if previous room was skipped, set flag if true
         if (skipped == true){
@@ -114,7 +135,7 @@
                     if (room[0].value == 0){
                         printf("\nThis is already cleared.\n\n");
                     } else {
-                        performAction(room, 0, &health, &weapon, &lastDefeated);
+                        performAction(room, 0, &health, &weapon, &lastDefeated, originalRules, &canHeal);
                         dungeonSize--;
                         roomSize--;
                     }
@@ -123,7 +144,7 @@
                     if (room[1].value == 0){
                         printf("\nThis is already cleared.\n\n");
                     } else {
-                        performAction(room, 1, &health, &weapon, &lastDefeated);
+                        performAction(room, 1, &health, &weapon, &lastDefeated, originalRules, &canHeal);
                         dungeonSize--;
                         roomSize--;
                     }
@@ -132,7 +153,7 @@
                     if (room[2].value == 0){
                         printf("\nThis is already cleared.\n\n");
                     } else {
-                        performAction(room, 2, &health, &weapon, &lastDefeated);
+                        performAction(room, 2, &health, &weapon, &lastDefeated, originalRules, &canHeal);
                         dungeonSize--;
                         roomSize--;
                     }
@@ -141,7 +162,7 @@
                     if (room[3].value == 0){
                         printf("\nThis is already cleared.\n\n");
                     } else {
-                        performAction(room, 3, &health, &weapon, &lastDefeated);
+                        performAction(room, 3, &health, &weapon, &lastDefeated, originalRules, &canHeal);
                         dungeonSize--;
                         roomSize--;
                     }
@@ -155,15 +176,15 @@
                         printf("Unable to skip, complete this one to skip again.\n\n");
                     }
                     break;
-                // Cheating tool for testing end of game functionality
-                // case '~':
-                //     printf("Cheating past room...\n\n");
-                //     room[0].value = 0;
-                //     room[1].value = 0;
-                //     room[2].value = 0;
-                //     dungeonSize -= 3;
-                //     roomSize -= 3;
-                //     break;
+                //Cheating tool for testing end of game functionality
+                case '~':
+                    printf("Cheating past room...\n\n");
+                    room[0].value = 0;
+                    room[1].value = 0;
+                    room[2].value = 0;
+                    dungeonSize -= 3;
+                    roomSize -= 3;
+                    break;
                 default:
                     printf("%c is not an option.\n\n", userIn);
                     break;
@@ -239,24 +260,25 @@
 
  // Handle skipping room
  void skipRoom(Deck* dungeon, Card* room, int dSize, int* card){
+    // Push back curCard by four
+    *card -= 4;
     // Move cards to front of dungeon
     for (int i = 0; i < dSize-4; i++){
-        dungeon->cards[i] = dungeon->cards[i+4];
+        dungeon->cards[(*card)+i] = dungeon->cards[(*card)+i+4];
     }
     // Set room to back of dungeon if there's space
     if (dSize >= 4)
         for (int i = 0; i < 4; i++){
-            dungeon->cards[dSize-4+i] = room[i];
+            dungeon->cards[40+i] = room[i];
     }
     // Clear room
     for (int i = 0; i < 4; i++)
         room[i].value = 0;
-    // Push back curCard by four
-    *card -= 4;
+    
  }
 
  // Perform an action based on card selected
- void performAction(Card* room, int action, int* health, int* weapon, int* last){
+ void performAction(Card* room, int action, int* health, int* weapon, int* last, bool origRules, bool* healing){
     char userIn;
     char junk;
 
@@ -296,11 +318,24 @@
     // Handle healing from Heart cards
     } else {
         printf("Found a healing potion of strength %d!\n\n", room[action].value);
-        if (20 < (*health) + (room[action].value)){
-            *health = 20;
-        } else {
-            *health = (*health)+ (room[action].value);
+        if (origRules == false){
+            if (20 < (*health) + (room[action].value)){
+                *health = 20;
+            } else {
+                *health = (*health)+ (room[action].value);
+            }
         }
+        else
+            if (*healing == true){
+                if (20 < (*health) + (room[action].value)){
+                    *health = 20;
+                } else {
+                    *health = (*health)+ (room[action].value);
+                }
+                *healing = false;
+            } 
+            else
+                printf("Unfortunately, you already healing this room, discarding potion.\n\n");
         room[action].value = 0;
     }
  }
