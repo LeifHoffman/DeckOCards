@@ -41,6 +41,9 @@
     Card hold[52];
     int heldCards = 0;
 
+    // Track turn count (Fail-safe for testing)
+    int turn = 0;
+
     // Define user inputs
     char userIn;
     char junk;
@@ -111,7 +114,7 @@
     while (!(p1DeckSize <= 0) && !(p2DeckSize <= 0)){
         // Wait for user input to continue
         printf("Press enter to play your next card.\n\n");
-        scanf("%c", &userIn);
+        //scanf("%c", &userIn);
 
         // Handle Deck refill
         if (p1CurCard == p1CurDeck){
@@ -140,7 +143,7 @@
         // Start war if values are same
         while (p1CurValue == p2CurValue){
             printf("War! Enter to continue.\n\n");
-            scanf("%c", &userIn);
+            //scanf("%c", &userIn);
             // Draw three cards and reveal last
             for (int i = 0; i < 3; i++){
                 p1CurCard++;
@@ -214,6 +217,11 @@
             printf("Your deck has %d total cards\n", p1DeckSize);
             // Print Opponent deck for debug
             printf("Opponent deck has %d total cards\n", p2DeckSize);
+        }
+        turn++;
+        if (turn > 10000){
+            printf("This is taking too long, you win.\n");
+            break;
         }
     }
 
