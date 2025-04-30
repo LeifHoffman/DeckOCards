@@ -8,10 +8,13 @@ My name is Leif Hoffman and I'm a computer engineer at Elizabethtown College in 
 ## About The Games
 
 ### War
+Comments about war (mostly just description of game)
 
 ### Scoundrel
-
+Comments about scoundrel (again, mostly description)
 
 ## Problems Encountered
+A lot (kinda)
 
 ## Reflection
+It was fun :P (Please update this!)
