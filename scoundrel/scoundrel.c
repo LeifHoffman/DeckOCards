@@ -177,14 +177,14 @@
                     }
                     break;
                 //Cheating tool for testing end of game functionality
-                case '~':
-                    printf("Cheating past room...\n\n");
-                    room[0].value = 0;
-                    room[1].value = 0;
-                    room[2].value = 0;
-                    dungeonSize -= 3;
-                    roomSize -= 3;
-                    break;
+                // case '~':
+                //     printf("Cheating past room...\n\n");
+                //     room[0].value = 0;
+                //     room[1].value = 0;
+                //     room[2].value = 0;
+                //     dungeonSize -= 3;
+                //     roomSize -= 3;
+                //     break;
                 default:
                     printf("%c is not an option.\n\n", userIn);
                     break;
