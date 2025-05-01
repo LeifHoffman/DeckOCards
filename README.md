@@ -26,7 +26,7 @@ When I started to program this game, I was aware that there were going to be a l
 I think that Scoundrel was a really good addition to the selection of games, adding a lot more diversity in gameplay compared to War. I would like to add more card games of that variety in the future if I have time to.
 
 ## Problems Encountered
-A lot (kinda)
+A lot (To be updated)
 
 ## Reflection
 It was fun :P (Please update this!)
